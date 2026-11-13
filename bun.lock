@@ -5,6 +5,7 @@
     "": {
       "name": "jev",
       "dependencies": {
+        "@ai-sdk/google": "^4.0.120",
         "@ai-sdk/groq": "^4.0.83",
         "@ai-sdk/react": "^4.0.176",
         "@base-ui/react": "^1.9.0",
@@ -48,6 +49,8 @@
   ],
   "packages": {
     "@ai-sdk/gateway": ["@ai-sdk/gateway@4.0.145", "", { "dependencies": { "@ai-sdk/provider": "4.0.38", "@ai-sdk/provider-utils": "5.0.81", "@vercel/oidc": "3.2.0" }, "peerDependencies": { "zod": "^3.25.76 || ^4.1.8" } }, "sha512-vquqCrEut1jlWshy2lWaOrBvyrpVjhLWoR/EVpb+m7JKtHtmpy0vpl9rtpB6xNFiumjT9e2s70MZmRth/hH9tw=="],
+
+    "@ai-sdk/google": ["@ai-sdk/google@4.0.120", "", { "dependencies": { "@ai-sdk/provider": "4.0.38", "@ai-sdk/provider-utils": "5.0.81" }, "peerDependencies": { "zod": "^3.25.76 || ^4.1.8" } }, "sha512-x3xxRbHtL076DKGMECyQeA9768KLVtpg4bQ9dE+NbRajVY/DqiBbnXfTdWGYqcl3DQ+oVXo3JXlgMJT3jEBFFQ=="],
 
     "@ai-sdk/groq": ["@ai-sdk/groq@4.0.83", "", { "dependencies": { "@ai-sdk/provider": "4.0.38", "@ai-sdk/provider-utils": "5.0.81" }, "peerDependencies": { "zod": "^3.25.76 || ^4.1.8" } }, "sha512-wP1AMgEiMgcxi93K9Yv1dIEcnOls/NCw9H7itlcFjCmXY1yTGfqY6Aa9tdc+oVLdHnRO5nTS2jGpjdgQhiReng=="],
 

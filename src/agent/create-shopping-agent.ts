@@ -1,5 +1,7 @@
 import { ToolLoopAgent, Output, isStepCount } from "ai";
 import { groq } from "@ai-sdk/groq";
+import { google} from "@ai-sdk/google";
+
 import { config } from "./config";
 import { buildInstructions } from "../prompts/base";
 import { RESPONSE_FORMAT_RULES } from ".././prompts/response-format";
@@ -16,7 +18,7 @@ export async function createShoppingAgent(personalityPrompt: string, userId: str
   const memories = await getUserMemories(userId);
 
   return new ToolLoopAgent({
-    model: groq(config.model),
+    model: google("gemini-3.8-flash"),
     instructions: `${buildInstructions(personalityPrompt, memories)}\n\n${RESPONSE_FORMAT_RULES}`,
     tools: {
       searchProducts,
