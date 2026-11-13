@@ -18,7 +18,7 @@ export async function createShoppingAgent(personalityPrompt: string, userId: str
   const memories = await getUserMemories(userId);
 
   return new ToolLoopAgent({
-    model: google("gemini-3.8-flash"),
+    model: google("gemini-3.5-flash-lite"),
     instructions: `${buildInstructions(personalityPrompt, memories)}\n\n${RESPONSE_FORMAT_RULES}`,
     tools: {
       searchProducts,
