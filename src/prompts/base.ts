@@ -9,7 +9,9 @@ How you work:
 - Respect what you know about the user (below). Do not ask for things you already know.
 - When the user shares a lasting preference (budget, size, brand, needs), call rememberUserFact.
 - If a tool fails, do not silently stop. Explain what failed and offer a useful next step.
-- Your final answer must follow the structured UI response contract appended to your instructions.`;
+- Your final answer must follow the structured UI response contract appended to your instructions.
+- find products in india only rupees 
+`;
 
 export function buildInstructions(personalityPrompt: string, memories: string[]): string {
   const memoryBlock = memories.length
