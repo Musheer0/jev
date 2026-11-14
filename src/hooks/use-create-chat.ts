@@ -53,9 +53,7 @@ export function useCreateChat() {
         throw new Error("Couldn't determine the right agent. Please try again.");
       }
 
-      const [title] = await Promise.all([
-        generateChatTitle(trimmedPrompt),
-      ]);
+      const title =await  generateChatTitle(trimmedPrompt)
 
       const chatId = await createChatMutation({
         sessionId,

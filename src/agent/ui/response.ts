@@ -1,6 +1,8 @@
 import { z } from "zod";
 
-const url = z.string().url();
+const url = z.string().url().refine((value) => /^https?:\/\//i.test(value), {
+  message: "Use an http(s) URL.",
+});
 
 /** Plain text message. No markdown. */
 export const textBlockSchema = z.object({

@@ -28,7 +28,15 @@ interface NewChatViewProps {
 }
 
 /** The PNG itself is the folder, so we just render it with a caption. */
-function FolderCard({ label, img }: { label: string; img: string }) {
+function FolderCard({
+  label,
+  img,
+  glowing = false,
+}: {
+  label: string;
+  img: string;
+  glowing?: boolean;
+}) {
   return (
     <button
       type="button"
@@ -40,9 +48,19 @@ function FolderCard({ label, img }: { label: string; img: string }) {
         src={img}
         alt=""
         draggable={false}
-        className="aspect-square w-full object-contain drop-shadow-md transition-transform duration-200 group-hover:-translate-y-1.5"
+        className={[
+          "aspect-square w-full object-contain transition-all duration-500 ease-in-out",
+          "group-hover:-translate-y-1.5",
+          glowing
+            ? "scale-105 brightness-110 drop-shadow-[0_0_18px_rgba(250,204,21,0.95)] motion-reduce:scale-100"
+            : "drop-shadow-md",
+        ].join(" ")}
       />
-      <span className="text-xs font-medium text-muted-foreground">
+      <span
+        className={`text-xs font-medium transition-colors duration-500 ${
+          glowing ? "text-foreground" : "text-muted-foreground"
+        }`}
+      >
         {label}
       </span>
     </button>
@@ -54,7 +72,29 @@ export function NewChatView({ userName = "Azmir" }: NewChatViewProps) {
   const [mascotFailed, setMascotFailed] = useState(false);
   const { createChat, isCreating, error } = useCreateChat();
   const [sessionId, setSessionId] = useState<string | null>(null);
+const [activeIndex, setActiveIndex] = useState<number | null>(null);
 
+// Randomly glow one folder at a time while the chat is being created.
+useEffect(() => {
+  if (!isCreating) {
+    setActiveIndex(null);
+    return;
+  }
+
+  let prev = -1;
+  const pickNext = () => {
+    let next: number;
+    do {
+      next = Math.floor(Math.random() * CATEGORIES.length);
+    } while (next === prev && CATEGORIES.length > 1);
+    prev = next;
+    setActiveIndex(next);
+  };
+
+  pickNext(); // start immediately
+  const id = setInterval(pickNext, 900);
+  return () => clearInterval(id);
+}, [isCreating]);
   // localStorage is browser-only, so read it after mount instead of during
   // render (render also runs during prerendering on the server).
   useEffect(() => {
@@ -133,9 +173,14 @@ export function NewChatView({ userName = "Azmir" }: NewChatViewProps) {
           aria-label="Shopping personalities"
           className="flex flex-wrap items-start justify-center gap-4 sm:gap-6"
         >
-          {CATEGORIES.map((c) => (
-            <FolderCard key={c.label} label={c.label} img={c.img} />
-          ))}
+        {CATEGORIES.map((c, i) => (
+  <FolderCard
+    key={c.label}
+    label={c.label}
+    img={c.img}
+    glowing={activeIndex === i}
+  />
+))}
         </section>
       </div>
 

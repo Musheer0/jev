@@ -1,25 +1,59 @@
 
-"use server"
+"use server";
+
 import { generateText } from "ai";
 import { groq } from "@ai-sdk/groq";
 
 export async function generateChatTitle(prompt: string): Promise<string> {
-  const { text } = await generateText({
-    model: groq("openai/gpt-oss-20b"),
-    system: `
-You generate short titles for shopping conversations.
+  try {
+    if (!prompt?.trim()) {
+      return "New Shopping Chat";
+    }
+
+    const { text, finishReason, usage } = await generateText({
+      model: groq("openai/gpt-oss-20b"),
+
+      system: `You are a conversation title generator.
+
+Generate a concise title for a shopping conversation.
 
 Rules:
-- Generate a title of 3-6 words.
-- Capture the user's main shopping intent.
+- Maximum 6 words.
+- Ideally 3-5 words.
+- Capture the user's primary intent.
 - Use natural title case.
-- No quotes, punctuation, or explanations.
+- No quotes, markdown, or punctuation.
 - Never answer the user's question.
-- Return only the title.
-`,
-    prompt: `Generate a title for this conversation:\n${prompt}`,
-    maxOutputTokens: 30,
-  });
+- Return ONLY the title.`,
 
-  return text.trim().replace(/^["']|["']$/g, "").slice(0, 60);
+      prompt: prompt.trim(),
+
+      temperature: 0.3,
+      maxOutputTokens: 50,
+    });
+
+    console.log("[Title Generation]", {
+      text,
+      finishReason,
+      usage,
+    });
+
+    const title = text
+      .trim()
+      .replace(/^["'`]+|["'`]+$/g, "")
+      .replace(/^title:\s*/i, "")
+      .replace(/\s+/g, " ")
+      .replace(/[.!?,;:]+$/g, "")
+      .slice(0, 60);
+
+    if (!title) {
+      console.error("Title generation returned empty text");
+      return "New Shopping Chat";
+    }
+
+    return title;
+  } catch (error) {
+    console.error("[Title Generation Error]", error);
+    return "New Shopping Chat";
+  }
 }

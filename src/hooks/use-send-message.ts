@@ -46,7 +46,7 @@ export function useSendMessage(chatId: Id<"chats">) {
         role: "user",
         content: trimmedPrompt,
       });
- const conversation = (messages||[])
+ const conversation = (messages||[]).slice(0,10)
       .map(
         (message) =>
           `${message.role === "user" ? "User" : "Assistant"}: ${message.content}`,

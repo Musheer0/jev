@@ -12,9 +12,11 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Textarea } from "@/components/ui/textarea";
+import { DotSquare } from "@/components/dot-square";
 
 import type { Id } from "../../../convex/_generated/dataModel";
 import { useShoppingChatStore } from "@/agent/ui/store";
+import { Thinking } from "./thinking-text";
 
 interface ChatViewProps {
   chatId: Id<"chats">;
@@ -248,16 +250,23 @@ export function ChatView({ chatId }: ChatViewProps) {
             {/* Agent is working */}
             {isSending && (
               <div
-                className="flex items-center gap-2 text-sm text-muted-foreground"
+                className="flex items-center gap-2.5 text-sm text-muted-foreground"
                 role="status"
                 aria-live="polite"
               >
-                <span className="flex gap-1" aria-hidden>
-                  <span className="size-1.5 animate-bounce rounded-full bg-muted-foreground/60 [animation-delay:-0.3s]" />
-                  <span className="size-1.5 animate-bounce rounded-full bg-muted-foreground/60 [animation-delay:-0.15s]" />
-                  <span className="size-1.5 animate-bounce rounded-full bg-muted-foreground/60" />
-                </span>
-                Researching products…
+                <DotSquare
+                  animation="think"
+                  size={22}
+                  density={5}
+                  dotSize={2.2}
+                  scale={1.6}
+                  duration={1.2}
+                  color="#a1a1aa"
+                  minOpacity={0.3}
+                  aria-hidden
+                  className="shrink-0"
+                />
+             <Thinking/>
               </div>
             )}
 
