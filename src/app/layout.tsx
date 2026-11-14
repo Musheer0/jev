@@ -1,10 +1,18 @@
 import type { Metadata } from "next";
-import { Host_Grotesk, } from "next/font/google";
+import localFont from "next/font/local";
 import "./globals.css";
 import { ConvexClientProvider } from "@/components/convex-provider";
 
-const hostGrotesk = Host_Grotesk({
-  subsets: ["latin"],
+// Self-hosted Host Grotesk variable font (latin).
+// Fetching from Google Fonts at build time breaks offline/proxied builds,
+// so the woff2 file is committed in src/app/fonts instead.
+const hostGrotesk = localFont({
+  src: "./fonts/HostGrotesk-Variable-latin.woff2",
+  weight: "300 800",
+  style: "normal",
+  display: "swap",
+  variable: "--font-sans",
+  fallback: ["system-ui", "sans-serif"],
 });
 
 
@@ -18,7 +26,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="en"
-      className={`${hostGrotesk.className}  h-full antialiased`}
+      className={`${hostGrotesk.variable} ${hostGrotesk.className} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">
         <ConvexClientProvider>

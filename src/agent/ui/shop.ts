@@ -36,7 +36,7 @@ export async function POST(req: Request) {
   try {
     // useChat sends UI messages. Convert them to model messages before passing
     // them into ToolLoopAgent; passing UIMessage objects directly is incorrect.
-    const modelMessages = convertToModelMessages(messages as UIMessage[]);
+    const modelMessages = await convertToModelMessages(messages as UIMessage[]);
     const agent = await createShoppingAgent(PERSONALITY, userId);
 
     const stream = createUIMessageStream({

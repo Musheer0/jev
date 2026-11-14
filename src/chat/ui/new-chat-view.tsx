@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Loader2, Menu, Send } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
@@ -53,7 +53,13 @@ export function NewChatView({ userName = "Azmir" }: NewChatViewProps) {
   const [message, setMessage] = useState("");
   const [mascotFailed, setMascotFailed] = useState(false);
   const { createChat, isCreating, error } = useCreateChat();
-      let sessionId = localStorage.getItem("shopping-session-id");
+  const [sessionId, setSessionId] = useState<string | null>(null);
+
+  // localStorage is browser-only, so read it after mount instead of during
+  // render (render also runs during prerendering on the server).
+  useEffect(() => {
+    setSessionId(localStorage.getItem("shopping-session-id"));
+  }, []);
 
   const canSend = message.trim().length > 0 && !isCreating;
 
